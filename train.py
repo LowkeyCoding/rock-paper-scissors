@@ -5,8 +5,12 @@ from keras.optimizers import Adam
 from keras.utils import np_utils
 from keras.layers import Activation, Dropout, Convolution2D, GlobalAveragePooling2D
 from keras.models import Sequential
+from keras.utils.vis_utils import plot_model
 import tensorflow as tf
+import matplotlib.pyplot as plt
+import sys
 import os
+
 
 IMG_SAVE_PATH = 'image_data'
 
@@ -61,7 +65,6 @@ dataset = [
 data, labels = zip(*dataset)
 labels = list(map(mapper, labels))
 
-
 '''
 labels: rock,paper,paper,scissors,rock...
 one hot encoded: [1,0,0], [0,1,0], [0,1,0], [0,0,1], [1,0,0]...
@@ -69,7 +72,7 @@ one hot encoded: [1,0,0], [0,1,0], [0,1,0], [0,0,1], [1,0,0]...
 
 # one hot encode the labels
 labels = np_utils.to_categorical(labels)
-
+print(labels)
 # define the model
 model = get_model()
 model.compile(
@@ -77,9 +80,25 @@ model.compile(
     loss='categorical_crossentropy',
     metrics=['accuracy']
 )
-
+plot_model(model, to_file='model.png')
 # start training
-model.fit(np.array(data), np.array(labels), epochs=10)
+history = model.fit(np.array(data), np.array(labels), epochs=int(sys.argv[1]))
+# Plot training & validation accuracy values
+plt.plot(history.history['acc'])
+#plt.plot(history.history['val_acc'])
+plt.title('Model accuracy')
+plt.ylabel('Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Test'], loc='upper left')
+plt.show()
 
+# Plot training & validation loss values
+plt.plot(history.history['loss'])
+#plt.plot(history.history['val_loss'])
+plt.title('Model loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Test'], loc='upper left')
+plt.show()
 # save the model for later use
-model.save("rock-paper-scissors-model.h5")
+model.save(sys.argv[2]+"-model.h5")

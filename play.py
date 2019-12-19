@@ -2,7 +2,7 @@ from keras.models import load_model
 import cv2
 import numpy as np
 from random import choice
-
+import sys
 REV_CLASS_MAP = {
     0: "rock",
     1: "paper",
@@ -38,9 +38,11 @@ def calculate_winner(move1, move2):
             return "Computer"
 
 
-model = load_model("rock-paper-scissors-model.h5")
+model = load_model(sys.argv[1]+"-model.h5")
 
 cap = cv2.VideoCapture(0)
+cap.set(3, 1280)
+cap.set(4, 720)
 
 prev_move = None
 
@@ -48,7 +50,8 @@ while True:
     ret, frame = cap.read()
     if not ret:
         continue
-
+    frame = cv2.flip(frame, 1)
+    
     # rectangle for user to play
     cv2.rectangle(frame, (100, 100), (500, 500), (255, 255, 255), 2)
     # rectangle for computer to play
