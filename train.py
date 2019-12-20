@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 import sys
 import os
 
-
 IMG_SAVE_PATH = 'image_data'
 
 CLASS_MAP = {
@@ -82,10 +81,11 @@ model.compile(
 )
 plot_model(model, to_file='model.png')
 # start training
-history = model.fit(np.array(data), np.array(labels), epochs=int(sys.argv[1]))
+
+history = model.fit(np.array(data), np.array(labels), epochs=int(sys.argv[1]), validation_split=0.1, shuffle=True)
 # Plot training & validation accuracy values
 plt.plot(history.history['acc'])
-#plt.plot(history.history['val_acc'])
+plt.plot(history.history['val_acc'])
 plt.title('Model accuracy')
 plt.ylabel('Accuracy')
 plt.xlabel('Epoch')
@@ -94,7 +94,7 @@ plt.show()
 
 # Plot training & validation loss values
 plt.plot(history.history['loss'])
-#plt.plot(history.history['val_loss'])
+plt.plot(history.history['val_loss'])
 plt.title('Model loss')
 plt.ylabel('Loss')
 plt.xlabel('Epoch')

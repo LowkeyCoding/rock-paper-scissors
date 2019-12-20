@@ -80,11 +80,18 @@ while True:
     # display the information
     font = cv2.FONT_HERSHEY_SIMPLEX
     cv2.putText(frame, "Your Move: " + user_move_name,
-                (50, 50), font, 1.2, (255, 255, 255), 2, cv2.LINE_AA)
+                (50, 50), font, 1.2, (208,224,64), 2, cv2.LINE_AA)
     cv2.putText(frame, "Computer's Move: " + computer_move_name,
-                (750, 50), font, 1.2, (255, 255, 255), 2, cv2.LINE_AA)
-    cv2.putText(frame, "Winner: " + winner,
+                (750, 50), font, 1.2, (208,224,64), 2, cv2.LINE_AA)
+    if winner == "Computer":
+        cv2.putText(frame, "Winner: " + winner,
                 (400, 600), font, 2, (0, 0, 255), 4, cv2.LINE_AA)
+    else if winner == "User":
+        cv2.putText(frame, "Winner: " + winner,
+                (400, 600), font, 2, (0, 255, 0), 4, cv2.LINE_AA)
+    else: 
+        cv2.putText(frame, "Winner: " + winner,
+                (400, 600), font, 2, (255, 0, 0), 4, cv2.LINE_AA)
 
     if computer_move_name != "none":
         icon = cv2.imread(
